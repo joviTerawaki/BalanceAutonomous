@@ -44,7 +44,7 @@ public class SwerveModule extends SubsystemBase{
 
         this.encoderOffset = encoderOffset;
         this.encoderReversed = encoderReversed;
-
+        
         turningEnc.setPositionConversionFactor(SwerveConsts.turningEncoderRotationConversion);
         turningEnc.setVelocityConversionFactor(SwerveConsts.turningEncoderSpeedConversion);
 
@@ -60,8 +60,9 @@ public class SwerveModule extends SubsystemBase{
         return drivingEnc.getIntegratedSensorPosition();
     }
 
+    // neo encoder in degrees 
     public double getTurningPosition(){
-        return turningEnc.getPosition();
+        return (turningEnc.getPosition() % 900) / 900 * 360;
     }
 
     public double getDriveSpeed(){
@@ -72,8 +73,10 @@ public class SwerveModule extends SubsystemBase{
         return turningEnc.getVelocity();
     }
 
+    //absolute encoder in radians 
     public double getAbsoluteEncoder(){
-        double angle = (absoluteEncoder.getAbsolutePosition() * 2.0 * Math.PI) - encoderOffset; // in radians
+        double angle = Math.toRadians(absoluteEncoder.getAbsolutePosition());
+        //double angle = (absoluteEncoder.getAbsolutePosition() * 2.0 * Math.PI) - encoderOffset; // in radians
         if(encoderReversed){
             return (angle * -1);
         } else {
@@ -93,7 +96,7 @@ public class SwerveModule extends SubsystemBase{
         
         // SwerveModuleState = state of a swerve module
         // SwerveModuleState(speed (in meters per second), angle of module (Using Rotation2d))
-        return new SwerveModuleState(getDriveSpeed(), new Rotation2d(getTurningPosition()));
+        return new SwerveModuleState(getDriveSpeed(), new Rotation2d(getAbsoluteEncoder()));
     }
 
     public void setDesiredState(SwerveModuleState state){
@@ -107,35 +110,36 @@ public class SwerveModule extends SubsystemBase{
 
         // set speed
         drivingMotor.set(state.speedMetersPerSecond / SwerveConsts.maxSpeed_mps); 
-        turningMotor.set(turningPID.calculate(getTurningPosition(), state.angle.getRadians()));
+        turningMotor.set(turningPID.calculate(getAbsoluteEncoder(), state.angle.getRadians()));
 
         // Print to SmartDashboard
-        SmartDashboard.putString("Swerve["+absoluteEncoder.getDeviceID()+"] state", state.toString());
-        // SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] turning enc", getTurningPosition());
-        // SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] CANCoder", getAbsoluteEncoder());
-        // SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] Drive Speed", getDriveSpeed());
-        // SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] NEO Output", drivingMotor.getMotorOutputPercent());
+        SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] desired enc", state.angle.getRadians()); //desired enc 
+        SmartDashboard.putString("Swerve["+absoluteEncoder.getDeviceID()+"] state", state.toString());  
     }
 
     public void stop(){
         drivingMotor.set(0);
         turningMotor.set(0);
     }
-    
     public void driveNeo(){
         turningMotor.set(0.1);
     }
 
     @Override
     public void periodic(){
-        kp = SmartDashboard.getNumber("kP", 0);
-        SmartDashboard.putNumber("kP", kp);
-        ki = SmartDashboard.getNumber("kI", 0);
-        SmartDashboard.putNumber("kI", ki);
-        kd = SmartDashboard.getNumber("kD", 0);
-        SmartDashboard.putNumber("kD", kd);
+        // kp = SmartDashboard.getNumber("kP", 0);
+        // SmartDashboard.putNumber("kP", kp);
+        // ki = SmartDashboard.getNumber("kI", 0);
+        // SmartDashboard.putNumber("kI", ki);
+        // kd = SmartDashboard.getNumber("kD", 0);
+        // SmartDashboard.putNumber("kD", kd);
 
-        turningPID.setPID(kp, ki, kd);
+        // turningPID.setPID(kp, ki, kd);
+
+        SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] turning enc", getTurningPosition());
+        SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] CANCoder", getAbsoluteEncoder());
+        SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] Drive Speed", getDriveSpeed());
+        SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] NEO Output", drivingMotor.getMotorOutputPercent());
     }
 
     // constructor

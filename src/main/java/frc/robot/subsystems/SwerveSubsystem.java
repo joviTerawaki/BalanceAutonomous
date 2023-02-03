@@ -22,13 +22,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem() {
         frontLeft = new SwerveModule(SwerveConsts.FL_turningMotorPort, SwerveConsts.FL_driveMotorPort, 
-            SwerveConsts.FL_absoluteEncoderPort, SwerveConsts.FL_offset , false, false);
+            SwerveConsts.FL_absoluteEncoderPort, SwerveConsts.FL_offset , false, true);
         
         backLeft = new SwerveModule(SwerveConsts.BL_turningMotorPort, SwerveConsts.BL_driveMotorPort, 
-            SwerveConsts.BL_absoluteEncoderPort, SwerveConsts.BL_offset , false, false);
+            SwerveConsts.BL_absoluteEncoderPort, SwerveConsts.BL_offset , false, true);
 
         backRight = new SwerveModule(SwerveConsts.BR_turningMotorPort, SwerveConsts.BR_driveMotorPort, 
-            SwerveConsts.BR_absoluteEncoderPort, SwerveConsts.BR_offset , false, false);
+            SwerveConsts.BR_absoluteEncoderPort, SwerveConsts.BR_offset , false, true);
 
         frontRight = new SwerveModule(SwerveConsts.FR_turningMotorPort, SwerveConsts.FR_driveMotorPort, 
             SwerveConsts.FR_absoluteEncoderPort, SwerveConsts.FR_offset , false, true);
@@ -41,7 +41,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public double getYawAngle(){
-        return ( navx.getYaw() /*navx.getAngle() % 360*/ );
+        return ( /*navx.getYaw()*/ navx.getAngle() % 360 );
     }
 
     public Rotation2d getRotation2d() {
@@ -69,7 +69,4 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Robot Yaw", getYawAngle());
     }
 
-    public void run(){
-        frontLeft.driveNeo();
-    }
 }

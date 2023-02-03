@@ -14,8 +14,10 @@ public final class Constants {
     /* * * MEASUREMENTS * * */
     public static final double wheelDiameter = 4 * 2.5 / 100; // in meters
     public static final double gearRatio = 8.14 / 1;
+    public static final double steerGearRatio = 150 / 7;
     public static final double trackWidth = 0.635;
     public static final double wheelBase = 0.635;
+    public static final double voltage = 11.0;
 
     /* Swerve Drive Kinematics */
     public static final SwerveDriveKinematics driveKinematics = new SwerveDriveKinematics(
@@ -55,21 +57,23 @@ public final class Constants {
     public static final double FR_offset = -Math.toRadians(0);
 
     /* * * CONVERSIONS TO METERS * * */
-    public static final double driveEncoderRotationConversion = 1;
-    public static final double driveEncoderSpeedConversion = 1;
+    public static final double driveEncoderRotationConversion = gearRatio * Math.PI * wheelDiameter;
+    public static final double driveEncoderSpeedConversion = driveEncoderRotationConversion / 60;
 
     /* * * CONVERSIONS TO RADIANS * * */
-    public static final double turningEncoderRotationConversion = 1;
-    public static final double turningEncoderSpeedConversion = 594.3893293799999;
-
+    public static final double turningEncoderRotationConversion = steerGearRatio * Math.PI; //267475.198; //341.88 * Math.PI;
+    public static final double turningEncoderSpeedConversion = turningEncoderRotationConversion / 60; //101604.912; //594.3893293799999;
+      // 5676 / 60 * 341.88 * Math.PI
 
     /* * * SPEEDS * * */
-    public static final double maxSpeed_mps = 4.1148; // 13.5 feet per second = 4.1148 meters per second
-    public static final double maxRotation = maxSpeed_mps / Math.hypot(trackWidth / 2.0, wheelBase / 2.0);
+    public static final double maxSpeed_mps = 4.1148;
+      // 6380.0 / 60.0 * ((14.0 / 50.0) * (25.0 / 19.0) * (15.0 / 45.0)) *
+      // 0.10033 * Math.PI; // 13.5 feet per second = 4.1148 meters per second
+    public static final double maxRotation = maxSpeed_mps / Math.hypot(trackWidth / 2.0, wheelBase / 2.0) * voltage;
 
     /* * * PID VALUES * * */
-    public static final double kp = 0;
-    public static final double ki = 0;
+    public static final double kp = 0.2;
+    public static final double ki = 0.004;
     public static final double kd = 0;
   }
 

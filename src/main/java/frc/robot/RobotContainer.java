@@ -14,16 +14,15 @@ public class RobotContainer {
 
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(new DriverControl(swerveSubsystem,
-      () -> m_Controller.getLeftX(), 
+      () -> -m_Controller.getLeftX(), 
       () -> m_Controller.getLeftY(), 
-      () -> m_Controller.getRightX(), 
+      () -> -m_Controller.getRightX(), 
       () -> m_Controller.getLeftBumper()));
     configureBindings();
   }
 
   private void configureBindings() {
     new JoystickButton(m_Controller, 1).onTrue(new InstantCommand(() -> swerveSubsystem.resetNavx()));
-    //new JoystickButton(m_Controller, 5).whileTrue(new InstantCommand(() -> swerveSubsystem.run()));
     
   }
 

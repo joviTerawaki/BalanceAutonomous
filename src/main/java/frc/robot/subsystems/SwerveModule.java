@@ -121,9 +121,6 @@ public class SwerveModule extends SubsystemBase{
         drivingMotor.set(0);
         turningMotor.set(0);
     }
-    public void driveNeo(){
-        turningMotor.set(0.1);
-    }
 
     @Override
     public void periodic(){

@@ -115,8 +115,8 @@ public class SwerveModule extends SubsystemBase{
         state = SwerveModuleState.optimize(state, getState().angle);
 
         // set speed
-        drivingMotor.set(state.speedMetersPerSecond / SwerveConsts.maxSpeed_mps); 
-        turningMotor.set(turningPID.calculate(getAbsoluteEncoder(), state.angle.getRadians()));
+        drivingMotor.set(state.speedMetersPerSecond / SwerveConsts.maxSpeed_mps * SwerveConsts.voltage); 
+        turningMotor.set(turningPID.calculate(getAbsoluteEncoder(), state.angle.getRadians()) * SwerveConsts.voltage);
 
         // Print to SmartDashboard
         SmartDashboard.putNumber("Swerve["+absoluteEncoder.getDeviceID()+"] desired enc", state.angle.getRadians()); //desired enc 

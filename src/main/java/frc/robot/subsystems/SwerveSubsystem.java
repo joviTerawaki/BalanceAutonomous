@@ -9,6 +9,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutoValues;
 import frc.robot.Constants.SwerveConsts;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -16,6 +17,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private SwerveModule backLeft;
     private SwerveModule backRight;
     private SwerveModule frontRight;
+
+    private SwerveModuleState states;
 
     private AHRS navx;
 
@@ -38,6 +41,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void resetNavx() {
         navx.zeroYaw();
+    }
+
+    public void resetEnc(){
+        frontLeft.resetEncoders();
+        backLeft.resetEncoders();
+        backRight.resetEncoders();
+        frontRight.resetEncoders();
     }
 
     public double getYawAngle(){
@@ -67,6 +77,38 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Robot Yaw", getYawAngle());
+    }
+
+    // Auto
+
+    public void driveForward(){
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(AutoValues.driveTranslationSpeed, 0, 0));
+        setModuleStates(moduleStates);
+    }
+
+    public void driveBackward(){
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(-AutoValues.driveTranslationSpeed, 0, 0));
+        setModuleStates(moduleStates);
+    }
+
+    public void strafeLeft(){
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, -AutoValues.driveTranslationSpeed, 0));
+        setModuleStates(moduleStates);
+    }
+
+    public void strafeRight(){
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, AutoValues.driveTranslationSpeed, 0));
+        setModuleStates(moduleStates);
+    }
+
+    public void rotateLeft(){
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, -AutoValues.driveRotationSpeed));
+        setModuleStates(moduleStates);
+    }
+
+    public void rotateRight(){
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, AutoValues.driveRotationSpeed));
+        setModuleStates(moduleStates);
     }
 
 }

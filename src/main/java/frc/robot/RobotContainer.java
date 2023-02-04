@@ -14,8 +14,8 @@ public class RobotContainer {
 
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(new DriverControl(swerveSubsystem,
+      () -> -m_Controller.getLeftY(), 
       () -> -m_Controller.getLeftX(), 
-      () -> m_Controller.getLeftY(), 
       () -> -m_Controller.getRightX(), 
       () -> m_Controller.getLeftBumper()));
     configureBindings();

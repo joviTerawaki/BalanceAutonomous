@@ -2,7 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,6 +23,7 @@ public class SwerveModule extends SubsystemBase{
     private WPI_TalonFX drivingMotor;
 
     private CANCoder absoluteEncoder;
+
     private RelativeEncoder turningEnc;
     private TalonFXSensorCollection drivingEnc;
 
@@ -31,11 +34,13 @@ public class SwerveModule extends SubsystemBase{
 
     private double kp, ki, kd;
 
-    public SwerveModule(int neoPort, int talonPort, int cancoderPort, double encoderOffset, boolean encoderReversed, boolean driveReversed){
+    public SwerveModule(int neoPort, int talonPort, int cancoderPort, double encoderOffset, boolean encoderReversed, boolean driveReversed, boolean turnReversed){
         turningMotor = new CANSparkMax(neoPort, MotorType.kBrushless);
         drivingMotor = new WPI_TalonFX(talonPort);
 
         absoluteEncoder = new CANCoder(cancoderPort);
+        absoluteEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Unsigned_0_to_360);
+
         turningEnc = turningMotor.getEncoder();
         drivingEnc = new TalonFXSensorCollection(drivingMotor);
 
@@ -49,6 +54,7 @@ public class SwerveModule extends SubsystemBase{
         turningEnc.setVelocityConversionFactor(SwerveConsts.turningEncoderSpeedConversion);
 
         drivingMotor.setInverted(driveReversed);
+        turningMotor.setInverted(turnReversed);
 
         resetEncoders();
 

@@ -24,7 +24,6 @@ public class RobotContainer {
 
   private void configureBindings() {
     new JoystickButton(m_Controller, 1).onTrue(new InstantCommand(() -> swerveSubsystem.resetNavx()));
-    new JoystickButton(m_Controller, 2).whileTrue(new DriveForward(swerveSubsystem));
   }
 
 

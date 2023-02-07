@@ -50,6 +50,10 @@ public class SwerveSubsystem extends SubsystemBase {
         frontRight.resetEncoders();
     }
 
+    public double getEnc() {
+        return frontLeft.getDrivePosition(); 
+    }
+
     public double getYawAngle(){
         return ( /*navx.getYaw()*/ navx.getAngle() % 360 );
     }

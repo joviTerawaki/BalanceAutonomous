@@ -4,12 +4,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class DriveForward extends CommandBase{
-    private SwerveSubsystem swerve;
+    private final SwerveSubsystem swerve;
+    private double desiredEnc; 
 
-    public DriveForward(SwerveSubsystem subs){
-        swerve = subs;
+    public DriveForward(SwerveSubsystem newSwerve, double newDesiredEnc){
+        swerve = newSwerve;
+        desiredEnc = newDesiredEnc; 
 
-        addRequirements(subs);
+        addRequirements(swerve);
     }
 
     @Override
@@ -17,7 +19,6 @@ public class DriveForward extends CommandBase{
         swerve.resetEnc();
     }
 
-    //test 
     @Override
     public void execute(){
         swerve.driveForward();
@@ -25,12 +26,12 @@ public class DriveForward extends CommandBase{
 
     @Override
     public void end(boolean interrupted){
-        
+        swerve.stopModules();
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        return swerve.getEnc() > desiredEnc;
     }
 
 }

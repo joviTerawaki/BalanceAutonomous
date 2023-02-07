@@ -3,11 +3,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class DriveForward extends CommandBase{
+public class DriveForwardCommand extends CommandBase{
     private final SwerveSubsystem swerve;
     private double desiredEnc; 
 
-    public DriveForward(SwerveSubsystem newSwerve, double newDesiredEnc){
+    public DriveForwardCommand(SwerveSubsystem newSwerve, double newDesiredEnc){
         swerve = newSwerve;
         desiredEnc = newDesiredEnc; 
 

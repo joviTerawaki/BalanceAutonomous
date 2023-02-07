@@ -1,13 +1,14 @@
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class DriveBackward extends CommandBase {
+public class StrafeRightCommand extends CommandBase {
   private final SwerveSubsystem swerve; 
   private double desiredEnc; 
 
-  public DriveBackward(SwerveSubsystem newSwerve, double newDesiredEnc) {
+  public StrafeRightCommand(SwerveSubsystem newSwerve, double newDesiredEnc) {
     swerve = newSwerve; 
     desiredEnc = newDesiredEnc; 
 
@@ -21,7 +22,7 @@ public class DriveBackward extends CommandBase {
 
   @Override
   public void execute() {
-    swerve.driveBackward();
+    swerve.strafeRight();
   }
 
   @Override

@@ -22,7 +22,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     private AHRS navx;
 
-
+    //CONSTRUCTOR
     public SwerveSubsystem() {
         frontLeft = new SwerveModule(SwerveConsts.FL_turningMotorPort, SwerveConsts.FL_driveMotorPort, 
             SwerveConsts.FL_absoluteEncoderPort, SwerveConsts.FL_offset , false, true, true);
@@ -39,6 +39,7 @@ public class SwerveSubsystem extends SubsystemBase {
         navx = new AHRS(SPI.Port.kMXP);;
     }
 
+    //RESET METHODS
     public void resetNavx() {
         navx.zeroYaw();
     }
@@ -50,22 +51,30 @@ public class SwerveSubsystem extends SubsystemBase {
         frontRight.resetEncoders();
     }
 
+    //GET METHODS 
     public double getEnc() {
         return frontLeft.getDrivePosition(); 
     }
 
+    //0-360
     public double getYawAngle(){
         return ( /*navx.getYaw()*/ navx.getAngle() % 360 );
     }
 
+    //number line 
     public double getAngle(){
         return navx.getAngle(); 
+    }
+
+    public double getRoll() {
+        return navx.getRoll(); 
     }
 
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getYawAngle());
     }
 
+    //modules 
     public void stopModules() {
         frontLeft.stop();
         backLeft.stop();
@@ -116,6 +125,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void rotateRight(){
         SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, AutoValues.driveRotationSpeed));
+        setModuleStates(moduleStates);
+    }
+
+    public void pidDrive(double y, double x, double z) {
+        SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(y, x, z)); 
         setModuleStates(moduleStates);
     }
 

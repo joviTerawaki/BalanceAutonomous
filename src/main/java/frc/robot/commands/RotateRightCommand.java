@@ -29,6 +29,6 @@ public class RotateRightCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return (swerve.getAngle() >= desiredAngle-2) && (swerve.getAngle() <= desiredAngle+2); 
   }
 }

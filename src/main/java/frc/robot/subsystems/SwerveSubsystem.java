@@ -128,6 +128,7 @@ public class SwerveSubsystem extends SubsystemBase {
         setModuleStates(moduleStates);
     }
 
+    //method to set x, y, and z axes 
     public void pidDrive(double y, double x, double z) {
         SwerveModuleState[] moduleStates = SwerveConsts.driveKinematics.toSwerveModuleStates(new ChassisSpeeds(y, x, z)); 
         setModuleStates(moduleStates);

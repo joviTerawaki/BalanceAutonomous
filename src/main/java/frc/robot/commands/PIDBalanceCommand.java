@@ -15,6 +15,8 @@ public class PIDBalanceCommand extends CommandBase {
     addRequirements(swerve);
   }
 
+  //calculates speed to apply to chassis 
+  //mac speed 0.6
   public double outputSpeed() {
     double speed; 
     if (swerve.getRoll() < 2.5 && swerve.getRoll() > -3.5) {
@@ -32,6 +34,7 @@ public class PIDBalanceCommand extends CommandBase {
     }
   }
 
+  //resets PID every time robot moves past setpoint 
   public void resetI() {
     double prevPosition = 0; 
     double currentPosition = pidController.getPositionError(); 

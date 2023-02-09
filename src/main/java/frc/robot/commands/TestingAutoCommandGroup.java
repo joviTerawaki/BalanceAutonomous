@@ -21,6 +21,7 @@ public class TestingAutoCommandGroup extends CommandBase {
 
   @Override
   public void execute() {
+    //drives forward until at 8 degrees, and then balances on the charge station 
     new SequentialCommandGroup(
       new DriveForwardRoll(swerve),
       new PIDBalanceCommand(swerve)
